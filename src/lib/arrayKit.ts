@@ -1,3 +1,6 @@
+type Join = (array: string[], separator: string) => string;
+export const join: Join = (array, separator) => array.join(separator);
+
 type Map = <T, K>(param: { array: T[]; mapper: (item: T) => K }) => K[];
 export const map: Map = <T, K>({
   array,
