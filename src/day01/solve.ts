@@ -1,28 +1,26 @@
-import fs from "fs-extra";
-import { NEW_LINE_CHARACTER } from "../constants";
-import { getSourceFolderPath } from "../utilities";
+import { NEW_LINE } from "../constants";
+import { map, reduce, sort, splice } from "../lib/arrayKit";
+import { split } from "../lib/stringKit";
 
-export const solve = () => {
-  const elves = fs
-    .readFileSync([getSourceFolderPath("day01"), "input.txt"].join("/"))
-    .toString()
-    .split(NEW_LINE_CHARACTER + NEW_LINE_CHARACTER);
+export const solve = (rawData: string) => {
+  const sortedElfCalories = sort(
+    map(split(rawData, NEW_LINE + NEW_LINE), (elf) =>
+      reduce(split(elf, NEW_LINE), eachElfTotalCalorieCalculator, 0)
+    ),
+    descSortFunc
+  );
 
-  const elfCalories = elves.map((elf) =>
-    elf
-      .split(NEW_LINE_CHARACTER)
-      .reduce((acc: number, curr: string) => acc + parseInt(curr), 0)
-  );
-  const partOneAnswer = elfCalories.reduce(
-    (acc, curr) => (curr > acc ? curr : acc),
-    0
-  );
+  const partOneAnswer = sortedElfCalories[0];
   console.log(`part one: ${partOneAnswer}`);
 
-  const partTwoAnswer = [...elfCalories]
-    .sort((a: number, b: number) => b - a)
-    .splice(0, 3)
-    .reduce((acc, curr) => acc + curr, 0);
-
+  const partTwoAnswer = reduce(
+    splice(sortedElfCalories, 0, 3),
+    (acc, curr) => acc + curr,
+    0
+  );
   console.log(`part two: ${partTwoAnswer}`);
 };
+
+const descSortFunc = (a: number, b: number) => b - a;
+const eachElfTotalCalorieCalculator = (acc: number, curr: string) =>
+  acc + parseInt(curr);

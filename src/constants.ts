@@ -1,1 +1,1 @@
-export const NEW_LINE_CHARACTER = "\n";
+export const NEW_LINE = "\n";
