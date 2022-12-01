@@ -1,6 +1,7 @@
 import { NEW_LINE } from "../constants";
 import { map, reduce, sort, splice } from "../lib/arrayKit";
 import { split } from "../lib/stringKit";
+import { log } from "../utilities";
 
 export const solve = (rawData: string) => {
   const sortedElfCalories = sort(
@@ -11,14 +12,14 @@ export const solve = (rawData: string) => {
   );
 
   const partOneAnswer = sortedElfCalories[0];
-  console.log(`part one: ${partOneAnswer}`);
+  log(`part one: ${partOneAnswer}`);
 
   const partTwoAnswer = reduce(
     splice(sortedElfCalories, 0, 3),
     (acc, curr) => acc + curr,
     0
   );
-  console.log(`part two: ${partTwoAnswer}`);
+  log(`part two: ${partTwoAnswer}`);
 };
 
 const descSortFunc = (a: number, b: number) => b - a;
