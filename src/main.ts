@@ -1,5 +1,3 @@
-const main = () => {
-  console.log("Advent of Code 2022");
-};
+import { solve } from "./day01/solve";
 
-main();
+const main = ((f) => f())(solve);
