@@ -8,13 +8,21 @@ export const solve = () => {
     .toString()
     .split(NEW_LINE_CHARACTER + NEW_LINE_CHARACTER);
 
-  const answer = elves
-    .map((elf) =>
-      elf
-        .split(NEW_LINE_CHARACTER)
-        .reduce((acc: number, curr: string) => acc + parseInt(curr), 0)
-    )
-    .reduce((acc, curr) => (curr > acc ? curr : acc), 0);
+  const elvCalories = elves.map((elf) =>
+    elf
+      .split(NEW_LINE_CHARACTER)
+      .reduce((acc: number, curr: string) => acc + parseInt(curr), 0)
+  );
+  const partOneAnswer = elvCalories.reduce(
+    (acc, curr) => (curr > acc ? curr : acc),
+    0
+  );
+  console.log(`part one: ${partOneAnswer}`);
 
-  console.log(answer);
+  const partTwoAnswer = [...elvCalories]
+    .sort((a: number, b: number) => b - a)
+    .splice(0, 3)
+    .reduce((acc, curr) => acc + curr, 0);
+
+  console.log(`part two: ${partTwoAnswer}`);
 };
