@@ -4,24 +4,46 @@ import { split } from "../lib/stringKit";
 import { log } from "../utilities";
 
 export const solve = (rawData: string) => {
-  const sortedElfCalories = sort(
-    map(split(rawData, NEW_LINE + NEW_LINE), (elf) =>
-      reduce(split(elf, NEW_LINE), eachElfTotalCalorieCalculator, 0)
-    ),
-    descSortFunc
-  );
+  const elves = split({ str: rawData, separator: NEW_LINE + NEW_LINE });
+  const elfCalories = map({
+    array: elves,
+    mapper: elfTotalCalorieCalculator,
+  });
+  const sortedElfCalories = sort({
+    array: elfCalories,
+    sorter: descSortFunc,
+  });
 
+  // part 1
   const partOneAnswer = sortedElfCalories[0];
   log(`part one: ${partOneAnswer}`);
 
-  const partTwoAnswer = reduce(
-    splice(sortedElfCalories, 0, 3),
-    (acc, curr) => acc + curr,
-    0
-  );
+  // part 2
+  const top3Elves = splice({
+    array: sortedElfCalories,
+    startAt: 0,
+    deleteCount: 3,
+  });
+
+  const partTwoAnswer = reduce({
+    array: top3Elves,
+    reducer: totalCalculatorReducer,
+    initialValue: 0,
+  });
+
   log(`part two: ${partTwoAnswer}`);
 };
 
-const descSortFunc = (a: number, b: number) => b - a;
-const eachElfTotalCalorieCalculator = (acc: number, curr: string) =>
+const totalCalculatorReducer = (acc: number, curr: number) => acc + curr;
+
+const elfTotalCalorieCalculator = (elf: string) =>
+  reduce({
+    array: split({ str: elf, separator: NEW_LINE }),
+    reducer: eachElfTotalCalorieReducer,
+    initialValue: 0,
+  });
+
+const eachElfTotalCalorieReducer = (acc: number, curr: string) =>
   acc + parseInt(curr);
+
+const descSortFunc = (a: number, b: number) => b - a;
