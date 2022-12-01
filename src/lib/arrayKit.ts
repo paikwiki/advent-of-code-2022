@@ -11,7 +11,7 @@ export const reduce: Reduce = <T, K>(
   array: T[],
   reducer: (acc: K, curr: T) => K,
   initialValue: K
-) => array.reduce((acc: K, curr: T) => reducer(acc, curr), initialValue);
+) => array.reduce(reducer, initialValue);
 
 type Splice = <T>(array: T[], startAt: number, deleteCount?: number) => T[];
 export const splice: Splice = <T>(
