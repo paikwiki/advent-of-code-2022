@@ -1,3 +1,15 @@
+type Filter = <T>(param: {
+  array: T[];
+  condition: (item: T) => boolean;
+}) => T[];
+export const filter = <T>({
+  array,
+  condition,
+}: {
+  array: T[];
+  condition: (item: T) => boolean;
+}) => array.filter(condition);
+
 type Join = (param: { array: string[]; separator?: string }) => string;
 export const join: Join = ({ array, separator }) => array.join(separator ?? "");
 
