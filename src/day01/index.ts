@@ -3,7 +3,7 @@ import { join, map, reduce, sort, splice } from "../lib/arrayKit";
 import { split } from "../lib/stringKit";
 import { log } from "../utilities";
 
-export const solve = (rawData: string) => {
+export const day01 = (rawData: string) => {
   const elves = split({
     str: rawData,
     separator: join({ array: [NEW_LINE, NEW_LINE] }),

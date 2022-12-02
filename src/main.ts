@@ -1,24 +1,28 @@
 import fs from "fs-extra";
-import { solve } from "./day01/solve";
+import arg from "arg";
+import solves from "./solves";
 import { join } from "./lib/arrayKit";
 import { getSourceFolderPath } from "./utilities";
 
-const main = ({
-  rawData,
-  solver,
-}: {
-  rawData: string;
-  solver: (rawData: string) => void;
-}) => solver(rawData);
+const args = arg({
+  "--exec": String,
+});
 
-main({
-  rawData: fs
+(() => {
+  if (args["--exec"] === undefined)
+    throw new Error("--exec required(ex: yarn start --exec day01)");
+
+  const dayToExecute = args["--exec"] as keyof typeof solves;
+  if (!solves[dayToExecute]) throw new Error("invalid --exec (ex: day01)");
+
+  const rawData = fs
     .readFileSync(
       join({
-        array: [getSourceFolderPath("day01"), "input.txt"],
+        array: [getSourceFolderPath(dayToExecute), "input.txt"],
         separator: "/",
       })
     )
-    .toString(),
-  solver: solve,
-});
+    .toString();
+
+  solves[dayToExecute](rawData);
+})();
