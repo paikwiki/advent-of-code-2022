@@ -13,7 +13,12 @@ const main = ({
 
 main({
   rawData: fs
-    .readFileSync(join([getSourceFolderPath("day01"), "input.txt"], "/"))
+    .readFileSync(
+      join({
+        array: [getSourceFolderPath("day01"), "input.txt"],
+        separator: "/",
+      })
+    )
     .toString(),
   solver: solve,
 });
