@@ -3,7 +3,7 @@ import { filter, map, reduce } from "../lib/arrayKit";
 import { split } from "../lib/stringKit";
 import { log } from "../utilities";
 
-type RockScissorsPaperRound = ["A" | "B" | "C", "X" | "Y" | "Z"];
+type RockScissorsPaperGame = ["A" | "B" | "C", "X" | "Y" | "Z"];
 type Shape = "rock" | "paper" | "scissors";
 type OppenentCode = "A" | "B" | "C";
 type MyCode = "X" | "Y" | "Z";
@@ -34,28 +34,42 @@ const GAME_SCORES: Record<"win" | "draw" | "lose", GameScore> = {
   lose: 0,
 } as const;
 
+// part 1 only
+const SHAPE_NAMES_PART_ONE: Record<OppenentCode | MyCode, Shape> = {
+  A: "rock",
+  B: "paper",
+  C: "scissors",
+  X: "rock",
+  Y: "paper",
+  Z: "scissors",
+} as const;
+
+// part 2 only
+const SHAPE_NAMES_PART_TWO: Record<OppenentCode, Shape> = {
+  A: "rock",
+  B: "paper",
+  C: "scissors",
+} as const;
+
+const SCORE_THAT_MY_SHAPE_MEANS: Record<MyCode, GameScore> = {
+  X: GAME_SCORES.lose,
+  Y: GAME_SCORES.draw,
+  Z: GAME_SCORES.win,
+};
+
 export const day02 = (rawData: string) => {
-  const rockScissorsPaperRounds = map<string, RockScissorsPaperRound>({
+  const rockScissorsPaperGames = map<string, RockScissorsPaperGame>({
     array: filter({
       array: split({ str: rawData, separator: NEW_LINE }),
       condition: (str) => str.length > 0,
     }),
     mapper: (roundString) =>
-      split({ str: roundString, separator: SPACE }) as RockScissorsPaperRound,
+      split({ str: roundString, separator: SPACE }) as RockScissorsPaperGame,
   });
 
   // part 1
-  const SHAPE_NAMES_PART_ONE: Record<OppenentCode | MyCode, Shape> = {
-    A: "rock",
-    B: "paper",
-    C: "scissors",
-    X: "rock",
-    Y: "paper",
-    Z: "scissors",
-  } as const;
-
   const partOneAnswer = reduce({
-    array: rockScissorsPaperRounds,
+    array: rockScissorsPaperGames,
     reducer: (acc, [opponent, mine]) =>
       acc +
       judgePartOne({
@@ -67,14 +81,8 @@ export const day02 = (rawData: string) => {
   log(`part 1: ${partOneAnswer}`);
 
   // part 2
-  const SHAPE_NAMES_PART_TWO: Record<OppenentCode, Shape> = {
-    A: "rock",
-    B: "paper",
-    C: "scissors",
-  } as const;
-
   const partTwoAnswer = reduce({
-    array: rockScissorsPaperRounds,
+    array: rockScissorsPaperGames,
     reducer: (acc, [opponentCode, myCode]) =>
       acc +
       judgePartTwo({
@@ -84,12 +92,6 @@ export const day02 = (rawData: string) => {
     initialValue: 0,
   });
   log(`part 2: ${partTwoAnswer}`);
-};
-
-const MY_SHAPE_MEANINGS: Record<MyCode, GameScore> = {
-  X: GAME_SCORES.lose,
-  Y: GAME_SCORES.draw,
-  Z: GAME_SCORES.win,
 };
 
 const judgePartOne = ({ opponent, mine }: { opponent: Shape; mine: Shape }) =>
@@ -106,15 +108,13 @@ const judgePartTwo = ({
   opponent: Shape;
   myCode: MyCode;
 }) => {
-  const myShapeForWin = MY_SHAPE_FOR_WIN[opponent];
-  const myShapeForLose = MY_SHAPE_FOR_LOSE[opponent];
-
-  const gameScore = MY_SHAPE_MEANINGS[myCode];
+  const gameScore = SCORE_THAT_MY_SHAPE_MEANS[myCode];
   const myShape =
     gameScore === GAME_SCORES.draw
       ? opponent
       : gameScore === GAME_SCORES.win
-      ? myShapeForWin
-      : myShapeForLose;
+      ? MY_SHAPE_FOR_WIN[opponent]
+      : MY_SHAPE_FOR_LOSE[opponent];
+
   return SHAPE_SCORES[myShape] + gameScore;
 };
