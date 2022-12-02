@@ -1,10 +1,13 @@
 import { NEW_LINE } from "../constants";
-import { map, reduce, sort, splice } from "../lib/arrayKit";
+import { join, map, reduce, sort, splice } from "../lib/arrayKit";
 import { split } from "../lib/stringKit";
 import { log } from "../utilities";
 
 export const solve = (rawData: string) => {
-  const elves = split({ str: rawData, separator: NEW_LINE + NEW_LINE });
+  const elves = split({
+    str: rawData,
+    separator: join({ array: [NEW_LINE, NEW_LINE] }),
+  });
   const elfCalories = map({
     array: elves,
     mapper: elfTotalCalorieCalculator,
