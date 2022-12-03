@@ -41,7 +41,7 @@ export const day03 = (rawData: string) => {
     array: sharedItems,
     reducer: (acc, character) =>
       character !== null
-        ? acc + getPrioty(charCodeAt({ str: character, index: 0 }))
+        ? acc + getPriority(charCodeAt({ str: character, index: 0 }))
         : acc,
     initialValue: 0,
   });
@@ -84,7 +84,7 @@ export const day03 = (rawData: string) => {
     array: sharedItemsPartTwo,
     reducer: (acc, character) =>
       character !== null
-        ? acc + getPrioty(charCodeAt({ str: character, index: 0 }))
+        ? acc + getPriority(charCodeAt({ str: character, index: 0 }))
         : acc,
     initialValue: 0,
   });
@@ -167,7 +167,7 @@ const findSharedItemPartOne = ([leftHandSide, rightHandSide]: Readonly<
   });
 };
 
-const getPrioty = (charCode: number) =>
+const getPriority = (charCode: number) =>
   CHAR_CODE_SMALL_A - 1 < charCode
     ? charCode - (CHAR_CODE_SMALL_A - 1)
     : charCode - (CHAR_CODE_CAPITAL_A - 1) + ALPHABET_QUANTITY;
