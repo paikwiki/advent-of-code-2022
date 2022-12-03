@@ -1,8 +1,8 @@
-import { NEW_LINE, SPACE } from "../constants";
-import { filter, map, reduce } from "../lib/arrayKit";
-import { compare, plus, same } from "../lib/operatorKit";
-import { split, stringLength } from "../lib/stringKit";
-import { log } from "../utilities";
+import { SPACE } from "../constants";
+import { map, reduce } from "../lib/arrayKit";
+import { plus, same } from "../lib/operatorKit";
+import { split } from "../lib/stringKit";
+import { getLines, log } from "../utilities";
 
 type RockScissorsPaperGame = ["A" | "B" | "C", "X" | "Y" | "Z"];
 type Shape = "rock" | "paper" | "scissors";
@@ -60,11 +60,7 @@ const SCORE_THAT_MY_SHAPE_MEANS: Record<MyCode, GameScore> = {
 
 export const day02 = (rawData: string) => {
   const rockScissorsPaperGames = map<string, RockScissorsPaperGame>({
-    array: filter({
-      array: split({ str: rawData, separator: NEW_LINE }),
-      condition: (str) =>
-        compare({ target: stringLength(str), greaterThan: 0 }),
-    }),
+    array: getLines(rawData),
     mapper: (roundString) =>
       split({ str: roundString, separator: SPACE }) as RockScissorsPaperGame,
   });

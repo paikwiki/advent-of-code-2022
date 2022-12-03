@@ -1,5 +1,6 @@
 import { NEW_LINE } from "../constants";
 import { join, map, reduce, sort, splice } from "../lib/arrayKit";
+import { minus, plus } from "../lib/operatorKit";
 import { split } from "../lib/stringKit";
 import { log } from "../utilities";
 
@@ -47,6 +48,6 @@ const elfTotalCalorieCalculator = (elf: string) =>
   });
 
 const eachElfTotalCalorieReducer = (acc: number, curr: string) =>
-  acc + parseInt(curr);
+  plus(acc, parseInt(curr));
 
-const descSortFunc = (a: number, b: number) => b - a;
+const descSortFunc = (a: number, b: number) => minus(b, a);

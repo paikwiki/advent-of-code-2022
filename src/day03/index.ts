@@ -1,12 +1,5 @@
 import { EMPTY_CHARACTER, NEW_LINE } from "../constants";
-import {
-  filter,
-  arrayLength,
-  map,
-  reduce,
-  splice,
-  includes,
-} from "../lib/arrayKit";
+import { arrayLength, map, reduce, splice, includes } from "../lib/arrayKit";
 import {
   compare,
   compareWithEqual,
@@ -18,17 +11,14 @@ import {
   same,
 } from "../lib/operatorKit";
 import { charCodeAt, slice, split, stringLength } from "../lib/stringKit";
-import { log } from "../utilities";
+import { getLines, log } from "../utilities";
 
 const CHAR_CODE_SMALL_A = 97;
 const CHAR_CODE_CAPITAL_A = 65;
 const ALPHABET_QUANTITY = 26;
 
 export const day03 = (rawData: string) => {
-  const rucksacks = filter({
-    array: split({ str: rawData, separator: NEW_LINE }),
-    condition: (str) => compare({ target: stringLength(str), greaterThan: 0 }),
-  });
+  const rucksacks = getLines(rawData);
 
   // part 1
   const compartmentsPairs = map({

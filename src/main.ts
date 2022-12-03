@@ -1,6 +1,7 @@
 import fs from "fs-extra";
 import arg from "arg";
 import days from "./days";
+import { SLASH } from "./constants";
 import { join } from "./lib/arrayKit";
 import { getSourceFolderPath } from "./utilities";
 
@@ -19,7 +20,7 @@ const args = arg({
     .readFileSync(
       join({
         array: [getSourceFolderPath(dayToExecute), "input.txt"],
-        separator: "/",
+        separator: SLASH,
       })
     )
     .toString();
