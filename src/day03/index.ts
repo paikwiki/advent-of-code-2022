@@ -1,4 +1,4 @@
-import { NEW_LINE } from "../constants";
+import { EMPTY_CHARACTER, NEW_LINE } from "../constants";
 import {
   filter,
   arrayLength,
@@ -118,9 +118,9 @@ const putElfInAsANewGroup = ({
 const findSharedItemPartTwo = ([first, second, third]: Readonly<
   [string, string, string]
 >) => {
-  const firstItems = split({ str: first, separator: "" });
-  const secondItems = split({ str: second, separator: "" });
-  const thirdItems = split({ str: third, separator: "" });
+  const firstItems = split({ str: first, separator: EMPTY_CHARACTER });
+  const secondItems = split({ str: second, separator: EMPTY_CHARACTER });
+  const thirdItems = split({ str: third, separator: EMPTY_CHARACTER });
 
   const twoElvesSharedItems = findAllSharedItems({
     leftItems: firstItems,
@@ -152,8 +152,8 @@ const findAllSharedItems = ({
 const findSharedItemPartOne = ([leftHandSide, rightHandSide]: Readonly<
   [string, string]
 >) => {
-  const leftItems = split({ str: leftHandSide, separator: "" });
-  const rightItems = split({ str: rightHandSide, separator: "" });
+  const leftItems = split({ str: leftHandSide, separator: EMPTY_CHARACTER });
+  const rightItems = split({ str: rightHandSide, separator: EMPTY_CHARACTER });
 
   return reduce<string, string | null>({
     array: leftItems,
