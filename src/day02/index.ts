@@ -1,5 +1,6 @@
 import { NEW_LINE, SPACE } from "../constants";
 import { filter, map, reduce } from "../lib/arrayKit";
+import { compare, plus, same } from "../lib/operatorKit";
 import { split, stringLength } from "../lib/stringKit";
 import { log } from "../utilities";
 
@@ -61,7 +62,8 @@ export const day02 = (rawData: string) => {
   const rockScissorsPaperGames = map<string, RockScissorsPaperGame>({
     array: filter({
       array: split({ str: rawData, separator: NEW_LINE }),
-      condition: (str) => stringLength(str) > 0,
+      condition: (str) =>
+        compare({ target: stringLength(str), greaterThan: 0 }),
     }),
     mapper: (roundString) =>
       split({ str: roundString, separator: SPACE }) as RockScissorsPaperGame,
@@ -71,11 +73,13 @@ export const day02 = (rawData: string) => {
   const partOneAnswer = reduce({
     array: rockScissorsPaperGames,
     reducer: (acc, [opponent, mine]) =>
-      acc +
-      judgePartOne({
-        opponent: SHAPE_NAMES_PART_ONE[opponent],
-        mine: SHAPE_NAMES_PART_ONE[mine],
-      }),
+      plus(
+        acc,
+        judgePartOne({
+          opponent: SHAPE_NAMES_PART_ONE[opponent],
+          mine: SHAPE_NAMES_PART_ONE[mine],
+        })
+      ),
     initialValue: 0,
   });
   log(`part 1: ${partOneAnswer}`);
@@ -84,11 +88,13 @@ export const day02 = (rawData: string) => {
   const partTwoAnswer = reduce({
     array: rockScissorsPaperGames,
     reducer: (acc, [opponentCode, myCode]) =>
-      acc +
-      judgePartTwo({
-        opponent: SHAPE_NAMES_PART_TWO[opponentCode],
-        myCode,
-      }),
+      plus(
+        acc,
+        judgePartTwo({
+          opponent: SHAPE_NAMES_PART_TWO[opponentCode],
+          myCode,
+        })
+      ),
     initialValue: 0,
   });
   log(`part 2: ${partTwoAnswer}`);
@@ -97,7 +103,7 @@ export const day02 = (rawData: string) => {
 const judgePartOne = ({ opponent, mine }: { opponent: Shape; mine: Shape }) =>
   (opponent === mine
     ? GAME_SCORES.draw
-    : MY_SHAPE_FOR_WIN[opponent] === mine
+    : same(MY_SHAPE_FOR_WIN[opponent], mine)
     ? GAME_SCORES.win
     : GAME_SCORES.lose) + SHAPE_SCORES[mine];
 
@@ -109,12 +115,11 @@ const judgePartTwo = ({
   myCode: MyCode;
 }) => {
   const gameScore = SCORE_THAT_MY_SHAPE_MEANS[myCode];
-  const myShape =
-    gameScore === GAME_SCORES.draw
-      ? opponent
-      : gameScore === GAME_SCORES.win
-      ? MY_SHAPE_FOR_WIN[opponent]
-      : MY_SHAPE_FOR_LOSE[opponent];
+  const myShape = same(gameScore, GAME_SCORES.draw)
+    ? opponent
+    : same(gameScore, GAME_SCORES.win)
+    ? MY_SHAPE_FOR_WIN[opponent]
+    : MY_SHAPE_FOR_LOSE[opponent];
 
-  return SHAPE_SCORES[myShape] + gameScore;
+  return plus(SHAPE_SCORES[myShape], gameScore);
 };

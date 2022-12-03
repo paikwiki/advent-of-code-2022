@@ -7,6 +7,14 @@ import {
   splice,
   includes,
 } from "../lib/arrayKit";
+import {
+  compare,
+  divide,
+  minus,
+  notNull,
+  plus,
+  same,
+} from "../lib/operatorKit";
 import { charCodeAt, slice, split, stringLength } from "../lib/stringKit";
 import { log } from "../utilities";
 
@@ -17,14 +25,14 @@ const ALPHABET_QUANTITY = 26;
 export const day03 = (rawData: string) => {
   const rucksacks = filter({
     array: split({ str: rawData, separator: NEW_LINE }),
-    condition: (str) => stringLength(str) > 0,
+    condition: (str) => compare({ target: stringLength(str), greaterThan: 0 }),
   });
 
   // part 1
   const compartmentsPairs = map({
     array: rucksacks,
     mapper: (str) => {
-      const dividePosition = stringLength(str) / 2;
+      const dividePosition = divide(stringLength(str), 2);
 
       return [
         slice({ str, start: 0, end: dividePosition }),
@@ -40,8 +48,8 @@ export const day03 = (rawData: string) => {
   const partOneAnswer = reduce({
     array: sharedItems,
     reducer: (acc, character) =>
-      character !== null
-        ? acc + getPriority(charCodeAt({ str: character, index: 0 }))
+      notNull(character)
+        ? plus(acc, getPriority(charCodeAt({ str: character, index: 0 })))
         : acc,
     initialValue: 0,
   });
@@ -58,7 +66,7 @@ export const day03 = (rawData: string) => {
   >({
     array: rucksacks,
     reducer: ({ groups, currentElvesCount }, elf) =>
-      arrayLength(groups) === 0 && currentElvesCount === 0
+      same(arrayLength(groups), 0) && same(currentElvesCount, 0)
         ? {
             groups: [[elf]],
             currentElvesCount: currentElvesCount,
@@ -66,7 +74,7 @@ export const day03 = (rawData: string) => {
         : currentElvesCount < 2
         ? {
             groups: putElfInLastGroup({ groups, elf }),
-            currentElvesCount: currentElvesCount + 1,
+            currentElvesCount: plus(currentElvesCount, 1),
           }
         : {
             groups: putElfInAsANewGroup({ groups, elf }),
@@ -83,8 +91,8 @@ export const day03 = (rawData: string) => {
   const partTwoAnswer = reduce({
     array: sharedItemsPartTwo,
     reducer: (acc, character) =>
-      character !== null
-        ? acc + getPriority(charCodeAt({ str: character, index: 0 }))
+      notNull(character)
+        ? plus(acc, getPriority(charCodeAt({ str: character, index: 0 })))
         : acc,
     initialValue: 0,
   });
@@ -102,9 +110,9 @@ const putElfInLastGroup = ({
   ...splice({
     array: groups,
     startAt: 0,
-    deleteCount: arrayLength(groups) - 1,
+    deleteCount: minus(arrayLength(groups), 1),
   }),
-  [...groups[arrayLength(groups) - 1], elf],
+  [...groups[minus(arrayLength(groups), 1)], elf],
 ];
 
 const putElfInAsANewGroup = ({
@@ -168,6 +176,12 @@ const findSharedItemPartOne = ([leftHandSide, rightHandSide]: Readonly<
 };
 
 const getPriority = (charCode: number) =>
-  CHAR_CODE_SMALL_A - 1 < charCode
-    ? charCode - (CHAR_CODE_SMALL_A - 1)
-    : charCode - (CHAR_CODE_CAPITAL_A - 1) + ALPHABET_QUANTITY;
+  CHAR_CODE_SMALL_A <= charCode
+    ? smallLetterCompensator(charCode)
+    : capitalLetterCompensator(charCode);
+
+const smallLetterCompensator = (charCode: number) =>
+  minus(charCode, minus(CHAR_CODE_SMALL_A, 1));
+
+const capitalLetterCompensator = (charCode: number) =>
+  plus(minus(charCode, minus(CHAR_CODE_CAPITAL_A, 1)), ALPHABET_QUANTITY);
