@@ -1,6 +1,6 @@
 import { NEW_LINE, SPACE } from "../constants";
 import { filter, map, reduce } from "../lib/arrayKit";
-import { split } from "../lib/stringKit";
+import { split, stringLength } from "../lib/stringKit";
 import { log } from "../utilities";
 
 type RockScissorsPaperGame = ["A" | "B" | "C", "X" | "Y" | "Z"];
@@ -61,7 +61,7 @@ export const day02 = (rawData: string) => {
   const rockScissorsPaperGames = map<string, RockScissorsPaperGame>({
     array: filter({
       array: split({ str: rawData, separator: NEW_LINE }),
-      condition: (str) => str.length > 0,
+      condition: (str) => stringLength(str) > 0,
     }),
     mapper: (roundString) =>
       split({ str: roundString, separator: SPACE }) as RockScissorsPaperGame,
