@@ -1,6 +1,13 @@
 import { NEW_LINE } from "../constants";
-import { filter, map, reduce, splice } from "../lib/arrayKit";
-import { charCodeAt, slice, split } from "../lib/stringKit";
+import {
+  filter,
+  arrayLength,
+  map,
+  reduce,
+  splice,
+  includes,
+} from "../lib/arrayKit";
+import { charCodeAt, slice, split, stringLength } from "../lib/stringKit";
 import { log } from "../utilities";
 
 const CHAR_CODE_SMALL_A = 97;
@@ -10,14 +17,14 @@ const ALPHABET_QUANTITY = 26;
 export const day03 = (rawData: string) => {
   const rucksacks = filter({
     array: split({ str: rawData, separator: NEW_LINE }),
-    condition: (str) => str.length > 0,
+    condition: (str) => stringLength(str) > 0,
   });
 
   // part 1
   const compartmentsPairs = map({
     array: rucksacks,
     mapper: (str) => {
-      const dividePosition = str.length / 2;
+      const dividePosition = stringLength(str) / 2;
 
       return [
         slice({ str, start: 0, end: dividePosition }),
@@ -51,7 +58,7 @@ export const day03 = (rawData: string) => {
   >({
     array: rucksacks,
     reducer: ({ groups, currentElvesCount }, elf) =>
-      groups.length === 0 && currentElvesCount === 0
+      arrayLength(groups) === 0 && currentElvesCount === 0
         ? {
             groups: [[elf]],
             currentElvesCount: currentElvesCount,
@@ -95,9 +102,9 @@ const putElfInLastGroup = ({
   ...splice({
     array: groups,
     startAt: 0,
-    deleteCount: groups.length - 1,
+    deleteCount: arrayLength(groups) - 1,
   }),
-  [...groups[groups.length - 1], elf],
+  [...groups[arrayLength(groups) - 1], elf],
 ];
 
 const putElfInAsANewGroup = ({
@@ -137,7 +144,8 @@ const findAllSharedItems = ({
 }) =>
   reduce<string, string[]>({
     array: leftItems,
-    reducer: (acc, item) => (rightItems.includes(item) ? [...acc, item] : acc),
+    reducer: (acc, item) =>
+      includes({ array: rightItems, item }) ? [...acc, item] : acc,
     initialValue: [],
   });
 
@@ -150,7 +158,11 @@ const findSharedItemPartOne = ([leftHandSide, rightHandSide]: Readonly<
   return reduce<string, string | null>({
     array: leftItems,
     reducer: (acc, item) =>
-      acc === null ? (rightItems.includes(item) ? item : null) : acc,
+      acc === null
+        ? includes({ array: rightItems, item })
+          ? item
+          : null
+        : acc,
     initialValue: null,
   });
 };

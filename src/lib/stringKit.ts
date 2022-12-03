@@ -1,6 +1,9 @@
 type CharCodeAt = (param: { str: string; index: number }) => number;
 export const charCodeAt: CharCodeAt = ({ str, index }) => str.charCodeAt(index);
 
+type StringLength = (str: string) => number;
+export const stringLength: StringLength = (str) => str.length;
+
 type Slice = (param: { str: string; start: number; end?: number }) => string;
 export const slice: Slice = ({ str, start, end }) => str.slice(start, end);
 
