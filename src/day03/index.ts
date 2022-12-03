@@ -9,7 +9,9 @@ import {
 } from "../lib/arrayKit";
 import {
   compare,
+  compareWithEqual,
   divide,
+  isNull,
   minus,
   notNull,
   plus,
@@ -45,6 +47,7 @@ export const day03 = (rawData: string) => {
     array: compartmentsPairs,
     mapper: (compartmentsPair) => findSharedItemPartOne(compartmentsPair),
   });
+
   const partOneAnswer = reduce({
     array: sharedItems,
     reducer: (acc, character) =>
@@ -69,9 +72,9 @@ export const day03 = (rawData: string) => {
       same(arrayLength(groups), 0) && same(currentElvesCount, 0)
         ? {
             groups: [[elf]],
-            currentElvesCount: currentElvesCount,
+            currentElvesCount,
           }
-        : currentElvesCount < 2
+        : compare({ target: 2, greaterThan: currentElvesCount })
         ? {
             groups: putElfInLastGroup({ groups, elf }),
             currentElvesCount: plus(currentElvesCount, 1),
@@ -123,12 +126,12 @@ const putElfInAsANewGroup = ({
   elf: string;
 }) => [...groups, [elf]];
 
-const findSharedItemPartTwo = ([first, second, third]: Readonly<
+const findSharedItemPartTwo = ([firstElf, secondElf, thirdElf]: Readonly<
   [string, string, string]
 >) => {
-  const firstItems = split({ str: first, separator: EMPTY_CHARACTER });
-  const secondItems = split({ str: second, separator: EMPTY_CHARACTER });
-  const thirdItems = split({ str: third, separator: EMPTY_CHARACTER });
+  const firstItems = split({ str: firstElf, separator: EMPTY_CHARACTER });
+  const secondItems = split({ str: secondElf, separator: EMPTY_CHARACTER });
+  const thirdItems = split({ str: thirdElf, separator: EMPTY_CHARACTER });
 
   const twoElvesSharedItems = findAllSharedItems({
     leftItems: firstItems,
@@ -166,17 +169,13 @@ const findSharedItemPartOne = ([leftHandSide, rightHandSide]: Readonly<
   return reduce<string, string | null>({
     array: leftItems,
     reducer: (acc, item) =>
-      acc === null
-        ? includes({ array: rightItems, item })
-          ? item
-          : null
-        : acc,
+      isNull(acc) ? (includes({ array: rightItems, item }) ? item : null) : acc,
     initialValue: null,
   });
 };
 
 const getPriority = (charCode: number) =>
-  CHAR_CODE_SMALL_A <= charCode
+  compareWithEqual({ target: charCode, greaterThanOrEqual: CHAR_CODE_SMALL_A })
     ? smallLetterCompensator(charCode)
     : capitalLetterCompensator(charCode);
 
