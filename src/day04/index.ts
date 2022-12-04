@@ -1,6 +1,6 @@
 import { COMMA, DASH } from "../constants";
 import { arrayLength, filter, includes, map } from "../lib/arrayKit";
-import { compareWithEqual } from "../lib/operatorKit";
+import { compareWithEqual, minus, plus } from "../lib/operatorKit";
 import { split } from "../lib/stringKit";
 import { createArrayFilledWithNull, getLines, log } from "../utilities";
 
@@ -54,8 +54,8 @@ const isOverlappedRange = ({
 
 const convertRangeToSectionsArray = (range: [number, number]) =>
   map({
-    array: createArrayFilledWithNull(range[1] - range[0] + 1),
-    mapper: (_, index) => index! + range[0], // TODO: ! 제거
+    array: createArrayFilledWithNull(plus(minus(range[1], range[0]), 1)),
+    mapper: (_, index) => plus(index!, range[0]), // TODO: ! 제거
   });
 
 const isFullyContainedRange = ({
