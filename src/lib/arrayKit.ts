@@ -11,8 +11,13 @@ export const filter: Filter = <T>({
 }) => array.filter(condition);
 
 type Includes = <T>(param: { array: T[]; item: T }) => boolean;
-export const includes: Includes = <T>({ array, item }: { array: T[]; item: T }) =>
-  array.includes(item);
+export const includes: Includes = <T>({
+  array,
+  item,
+}: {
+  array: T[];
+  item: T;
+}) => array.includes(item);
 
 type Join = (param: { array: string[]; separator?: string }) => string;
 export const join: Join = ({ array, separator }) => array.join(separator ?? "");
@@ -20,13 +25,12 @@ export const join: Join = ({ array, separator }) => array.join(separator ?? "");
 type ArrayLength = (array: unknown[]) => number;
 export const arrayLength: ArrayLength = (array) => array.length;
 
-type Map = <T, K>(param: { array: T[]; mapper: (item: T) => K }) => K[];
-export const map: Map = <T, K>({
+export const map = <T, K>({
   array,
   mapper,
 }: {
   array: T[];
-  mapper: (item: T) => K;
+  mapper: (item: T, index?: number) => K;
 }) => array.map(mapper);
 
 type Reduce = <T, K>(param: {
