@@ -9,6 +9,9 @@ export const getLines = (str: string) =>
     condition: (str) => compare({ target: stringLength(str), greaterThan: 0 }),
   });
 
+export const createArrayFilledWithNull = (arrayLengh: number) =>
+  Array(arrayLengh).fill(null);
+
 export const getSourceFolderPath = (folderName: string) =>
   join({ array: [process.cwd(), "src", folderName], separator: SLASH });
 
