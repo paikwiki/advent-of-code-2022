@@ -24,8 +24,6 @@ import {
 import { charCodeAt, split, stringLength } from "../lib/stringKit";
 import { createArrayFilledWithNull, getLines, log } from "../utilities";
 
-const A = "A";
-const Z = "Z";
 const SPACE_COUNT_BETWEEN_STACKS = 4;
 
 export const day05 = (rawData: string) => {
@@ -148,10 +146,13 @@ const getStackCountInCertainLine = (line: string) =>
 
 const isCapitalAlphabet = (charatcter: string) =>
   compareWithEqual({
-    target: charCodeAt({ str: charatcter, index: 0 }),
-    greaterThanOrEqual: charCodeAt({ str: A, index: 0 }),
+    target: characterCodeOf(charatcter),
+    greaterThanOrEqual: characterCodeOf("A"),
   }) &&
   compareWithEqual({
-    target: charCodeAt({ str: Z, index: 0 }),
-    greaterThanOrEqual: charCodeAt({ str: charatcter, index: 0 }),
+    target: characterCodeOf("Z"),
+    greaterThanOrEqual: characterCodeOf(charatcter),
   });
+
+const characterCodeOf = (character: string) =>
+  charCodeAt({ str: character, index: 0 });
