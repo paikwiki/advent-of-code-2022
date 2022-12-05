@@ -53,12 +53,10 @@ export const day03 = (rawData: string) => {
   const elfGroups = reduce<string, string[][]>({
     array: rucksacks,
     reducer: (groups: string[][], elf, index) =>
-      index === 0
-        ? [[elf]]
-        : compare({ target: 2, greaterThan: (index - 1) % 3 })
+      compare({ target: 2, greaterThan: (index - 1) % 3 })
         ? putElfInLastGroup({ groups, elf })
         : putElfInAsANewGroup({ groups, elf }),
-    initialValue: [],
+    initialValue: [[]],
   });
 
   const sharedItemsPartTwo = map<[string, string, string], string>({
