@@ -50,7 +50,10 @@ export const day05 = (rawData: string) => {
     startAt: 1,
     deleteCount: minus(arrayLength(diagramLines), 1),
   });
-  const stacks = createArrayFilledWithNull(stackCount).map<string[]>(() => []);
+  const stacks = map<string, string[]>({
+    array: createArrayFilledWithNull(stackCount),
+    mapper: () => [],
+  });
 
   forEach({
     array: reversedDiagramLines,
