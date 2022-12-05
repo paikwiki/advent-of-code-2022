@@ -30,12 +30,12 @@ export const map = <T, K>({
   mapper,
 }: {
   array: T[];
-  mapper: (item: T, index?: number) => K;
+  mapper: (item: T, index: number) => K;
 }) => array.map(mapper);
 
 type Reduce = <T, K>(param: {
   array: T[];
-  reducer: (acc: K, curr: T) => K;
+  reducer: (acc: K, curr: T, index: number) => K;
   initialValue: K;
 }) => K;
 export const reduce: Reduce = <T, K>({
@@ -44,7 +44,7 @@ export const reduce: Reduce = <T, K>({
   initialValue,
 }: {
   array: T[];
-  reducer: (acc: K, curr: T) => K;
+  reducer: (acc: K, curr: T, index: number) => K;
   initialValue: K;
 }) => array.reduce(reducer, initialValue);
 

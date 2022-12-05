@@ -50,30 +50,15 @@ export const day03 = (rawData: string) => {
   log(`part 1: ${partOneAnswer}`);
 
   // part 2
-  const { groups: elfGroups } = reduce<
-    string,
-    {
-      groups: string[][];
-      currentElvesCount: number;
-    }
-  >({
+  const elfGroups = reduce<string, string[][]>({
     array: rucksacks,
-    reducer: ({ groups, currentElvesCount }, elf) =>
-      same(arrayLength(groups), 0) && same(currentElvesCount, 0)
-        ? {
-            groups: [[elf]],
-            currentElvesCount,
-          }
-        : compare({ target: 2, greaterThan: currentElvesCount })
-        ? {
-            groups: putElfInLastGroup({ groups, elf }),
-            currentElvesCount: plus(currentElvesCount, 1),
-          }
-        : {
-            groups: putElfInAsANewGroup({ groups, elf }),
-            currentElvesCount: 0,
-          },
-    initialValue: { groups: [], currentElvesCount: 0 },
+    reducer: (groups: string[][], elf, index) =>
+      index === 0
+        ? [[elf]]
+        : compare({ target: 2, greaterThan: (index - 1) % 3 })
+        ? putElfInLastGroup({ groups, elf })
+        : putElfInAsANewGroup({ groups, elf }),
+    initialValue: [],
   });
 
   const sharedItemsPartTwo = map<[string, string, string], string>({
