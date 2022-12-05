@@ -25,6 +25,16 @@ export const join: Join = ({ array, separator }) => array.join(separator ?? "");
 type ArrayLength = (array: unknown[]) => number;
 export const arrayLength: ArrayLength = (array) => array.length;
 
+export const forEach = <T>({
+  array,
+  iterateFunction,
+}: {
+  array: T[];
+  iterateFunction: (param: T, index: number) => void;
+}) => {
+  array.forEach(iterateFunction);
+};
+
 export const map = <T, K>({
   array,
   mapper,
@@ -33,12 +43,7 @@ export const map = <T, K>({
   mapper: (item: T, index: number) => K;
 }) => array.map(mapper);
 
-type Reduce = <T, K>(param: {
-  array: T[];
-  reducer: (acc: K, curr: T, index: number) => K;
-  initialValue: K;
-}) => K;
-export const reduce: Reduce = <T, K>({
+export const reduce = <T, K>({
   array,
   reducer,
   initialValue,
@@ -48,12 +53,9 @@ export const reduce: Reduce = <T, K>({
   initialValue: K;
 }) => array.reduce(reducer, initialValue);
 
-type Splice = <T>(param: {
-  array: T[];
-  startAt: number;
-  deleteCount?: number;
-}) => T[];
-export const splice: Splice = <T>({
+export const reverse = <T>(array: T[]) => [...array].reverse();
+
+export const splice = <T>({
   array,
   startAt,
   deleteCount,
