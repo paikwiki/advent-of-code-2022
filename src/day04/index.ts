@@ -52,10 +52,15 @@ const isOverlappedRange = ({
     })
   ) > 0;
 
-const convertRangeToSectionsArray = (range: [number, number]) =>
+const convertRangeToSectionsArray = ([firstSectionNumber, lastSectionNumber]: [
+  number,
+  number
+]) =>
   map({
-    array: createArrayFilledWithNull(plus(minus(range[1], range[0]), 1)),
-    mapper: (_, index) => plus(index, range[0]),
+    array: createArrayFilledWithNull(
+      plus(minus(lastSectionNumber, firstSectionNumber), 1)
+    ),
+    mapper: (_, index) => plus(index, firstSectionNumber),
   });
 
 const isFullyContainedRange = ({
