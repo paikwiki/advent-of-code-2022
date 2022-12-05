@@ -1,4 +1,9 @@
-import { EMPTY_CHARACTER, NEW_LINE, SPACE } from "../constants";
+import {
+  DOUBLE_NEW_LINES,
+  EMPTY_CHARACTER,
+  NEW_LINE,
+  SPACE,
+} from "../constants";
 import {
   arrayLength,
   forEach,
@@ -26,10 +31,7 @@ const SPACE_COUNT_BETWEEN_STACKS = 4;
 export const day05 = (rawData: string) => {
   const [stackDiagram, instructionRawData] = split({
     str: rawData,
-    separator: join({
-      array: [NEW_LINE, NEW_LINE],
-      separator: EMPTY_CHARACTER,
-    }),
+    separator: DOUBLE_NEW_LINES,
   });
 
   const diagramLines = split({ str: stackDiagram, separator: NEW_LINE });

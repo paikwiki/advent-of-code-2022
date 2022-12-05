@@ -1,5 +1,5 @@
-import { NEW_LINE } from "../constants";
-import { join, map, reduce, sort, splice } from "../lib/arrayKit";
+import { DOUBLE_NEW_LINES, NEW_LINE } from "../constants";
+import { map, reduce, sort, splice } from "../lib/arrayKit";
 import { minus, plus } from "../lib/operatorKit";
 import { split } from "../lib/stringKit";
 import { log } from "../utilities";
@@ -7,7 +7,7 @@ import { log } from "../utilities";
 export const day01 = (rawData: string) => {
   const elves = split({
     str: rawData,
-    separator: join({ array: [NEW_LINE, NEW_LINE] }),
+    separator: DOUBLE_NEW_LINES,
   });
   const elfCalories = map({
     array: elves,

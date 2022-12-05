@@ -1,4 +1,4 @@
-import { EMPTY_CHARACTER, NEW_LINE } from "../constants";
+import { EMPTY_CHARACTER } from "../constants";
 import { arrayLength, map, reduce, splice, includes } from "../lib/arrayKit";
 import {
   compare,
