@@ -55,14 +55,21 @@ export const day05 = (rawData: string) => {
   forEach({
     array: reversedDiagramLines,
     iterateFunction: (line) => {
-      // TODO: for문 제거!
-      for (let i = 0; i < getStackCountInCertainLine(line); i++) {
-        const targetIndex = plus(multiply(i, SPACE_COUNT_BETWEEN_STACKS), 1);
-        const crate = line[targetIndex];
+      reduce({
+        array: map({
+          array: createArrayFilledWithNull(getStackCountInCertainLine(line)),
+          mapper: (_, index) => index,
+        }),
+        reducer: (_, index) => {
+          const target = plus(multiply(index, SPACE_COUNT_BETWEEN_STACKS), 1);
+          const crate = line[target];
+          if (isCapitalAlphabet(crate))
+            mutateForPush({ array: stacks[index], item: crate });
 
-        if (isCapitalAlphabet(crate))
-          mutateForPush({ array: stacks[i], item: crate });
-      }
+          return _;
+        },
+        initialValue: null,
+      });
     },
   });
 
