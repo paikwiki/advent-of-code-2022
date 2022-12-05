@@ -69,11 +69,11 @@ export const day05 = (rawData: string) => {
   const instructions = map({
     array: getLines(instructionRawData),
     mapper: (line) => {
-      const [_1, crateCountString, _2, sourceStackName, _3, destStackName] =
+      const [_1, crateQuantityString, _2, sourceStackName, _3, destStackName] =
         split({ str: line, separator: SPACE });
       return {
-        crateQuantity: parseInt(crateCountString),
-        sourceStacIndex: minus(parseInt(sourceStackName), 1),
+        crateQuantity: parseInt(crateQuantityString),
+        sourceStackIndex: minus(parseInt(sourceStackName), 1),
         destStackIndex: minus(parseInt(destStackName), 1),
       };
     },
@@ -83,9 +83,9 @@ export const day05 = (rawData: string) => {
   const partOneStacks = map({ array: stacks, mapper: (stack) => [...stack] });
   forEach({
     array: instructions,
-    iterateFunction: ({ crateQuantity, sourceStacIndex, destStackIndex }) => {
+    iterateFunction: ({ crateQuantity, sourceStackIndex, destStackIndex }) => {
       const popped = mutateForPopN({
-        array: partOneStacks[sourceStacIndex],
+        array: partOneStacks[sourceStackIndex],
         quantity: crateQuantity,
       });
       mutateForPushAll({ array: partOneStacks[destStackIndex], items: popped });
@@ -105,9 +105,9 @@ export const day05 = (rawData: string) => {
   const partTwoStack = map({ array: stacks, mapper: (stack) => [...stack] });
   forEach({
     array: instructions,
-    iterateFunction: ({ crateQuantity, sourceStacIndex, destStackIndex }) => {
+    iterateFunction: ({ crateQuantity, sourceStackIndex, destStackIndex }) => {
       const popped = mutateForPopN({
-        array: partTwoStack[sourceStacIndex],
+        array: partTwoStack[sourceStackIndex],
         quantity: crateQuantity,
       });
       mutateForPushAll({
